@@ -1,0 +1,16 @@
+#!/usr/bin/make -f
+
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed -Wl,-z,defs
+
+%:
+	dh $@ --parallel --with autoreconf
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		--disable-rpath \
+		--enable-dynamic-frontends \
+		--enable-nasm \
+		--with-fileio=sndfile
+
+override_dh_strip:
+	dh_strip --dbg-package=lame-dbg
